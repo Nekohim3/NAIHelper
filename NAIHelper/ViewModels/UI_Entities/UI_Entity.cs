@@ -9,8 +9,9 @@ namespace NAIHelper.ViewModels.UI_Entities
 {
     public class UI_Entity : ViewModelBase
     {
-        public int Id       { get; set; }
-        protected  int InitHash { get; set; }
+        public    int  Id        { get; set; }
+        protected int  InitHash  { get; set; }
+        protected bool IsChanged => this.GetHash() != InitHash;
         public static bool operator !=(UI_Entity? a, UI_Entity? b)
         {
             return !(a == b);
@@ -33,8 +34,6 @@ namespace NAIHelper.ViewModels.UI_Entities
                 return e.GetHashCode() == GetHashCode();
             return e.Id == Id;
         }
-
-        public override int GetHashCode() => this.GetHash();
 
     }
 }

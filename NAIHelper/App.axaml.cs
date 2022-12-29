@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using NAIHelper.Models;
+using NAIHelper.Services.DbServices;
 using NAIHelper.Utils;
 using NAIHelper.ViewModels;
 using NAIHelper.ViewModels.UI_Entities;
 using NAIHelper.Views;
+using Newtonsoft.Json;
 
 namespace NAIHelper
 {
@@ -18,12 +21,8 @@ namespace NAIHelper
 
         public override void OnFrameworkInitializationCompleted()
         {
-            var q1 = new UI_Dir("qwe");
-            var q2 = new UI_Dir("qwe");
-            var q3 = new UI_Dir("asd");
-            var w1 = q1.GetHashCode();
-            var w2 = q2.GetHashCode();
-            var w3 = q3.GetHashCode();
+            var    str = new DirService<Dir>().GetAll();
+            //var lst = JsonConvert.DeserializeObject<Dir>(str, new JsonSerializerSettings(){NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore});
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow

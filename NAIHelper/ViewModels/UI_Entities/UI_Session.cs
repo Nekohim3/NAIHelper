@@ -47,7 +47,8 @@ public class UI_Session : UI_Entity
 
     public UI_Session(string name, string? note = null)
     {
-        
+        _name = name;
+        _note = note;
     }
 
     #endregion

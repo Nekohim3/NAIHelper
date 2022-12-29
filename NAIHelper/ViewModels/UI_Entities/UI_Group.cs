@@ -62,7 +62,9 @@ public class UI_Group : UI_Entity
 
     public UI_Group(string name, int order = 0, string? note = null)
     {
-        
+        _name = name;
+        _order = order;
+        _note = note;
     }
 
     #endregion

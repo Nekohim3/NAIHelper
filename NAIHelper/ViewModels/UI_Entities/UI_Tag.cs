@@ -53,7 +53,9 @@ public class UI_Tag : UI_Entity
 
     public UI_Tag(string name, string? link = null, string? note = null)
     {
-        
+        _name = name;
+        _link = link;
+        _note = note;
     }
 
     #endregion

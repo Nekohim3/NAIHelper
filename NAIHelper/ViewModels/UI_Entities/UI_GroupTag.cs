@@ -54,7 +54,8 @@ public class UI_GroupTag : UI_Entity
 
     public UI_GroupTag(int order, int strength)
     {
-        
+        _order    = order;
+        _strength = strength;
     }
 
     #endregion

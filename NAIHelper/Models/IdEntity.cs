@@ -8,8 +8,6 @@ public class IdEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    //public int InitHash = 0;
-
     public static bool operator !=(IdEntity? a, IdEntity? b)
     {
         return !(a == b);
