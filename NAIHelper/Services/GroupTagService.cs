@@ -5,13 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using NAIHelper.ViewModels.UI_Entities;
 
-namespace NAIHelper.Services.UI_Services
-{
-    public abstract class TService<T> where T : UI_Entity, new()
-    {
-        protected virtual string GetAll()
-        {
+namespace NAIHelper.Services;
 
-        }
+public class GroupTagService : TService<GroupTag>
+{
+    public GroupTagService() : base("GroupTags")
+    {
     }
 }

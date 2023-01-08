@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using NAIHelper.Models;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
+using System.Text;
+using JetBrains.Annotations;
 using NAIHelper.ViewModels;
 using NAIHelper.ViewModels.UI_Entities;
+using Newtonsoft.Json;
 
 namespace NAIHelper.Utils
 {
@@ -37,23 +42,41 @@ namespace NAIHelper.Utils
             return destination;
         }
 
-        public static int GetHash<T>(this T source) where T : class, new()
+        //public static int GetHash<T>(this T source) where T : class, new()
+        //{
+        //    var hash = new HashCode();
+        //    var type = source.GetType();
+        //    while (type != typeof(Entity))
+        //    {
+        //        foreach (var p in type.GetProperties())
+        //        {
+        //            if (p.CanWrite && ((!p.PropertyType.IsClass && !typeof(System.Collections.IEnumerable).IsAssignableFrom(p.PropertyType)) || p.PropertyType == typeof(string)))
+        //                hash.Add(p.GetValue(source, null));
+        //        }
+        //        if (type.BaseType == null) break;
+        //        type = type.BaseType;
+        //    }
+
+
+        //    return hash.ToHashCode();
+        //}
+
+        public static byte[] GetHash<T>(this T source) where T : class, new()
         {
-            var hash = new HashCode();
-            var type = source.GetType();
-            while (type != typeof(UI_Entity))
+            var objList = new List<object?>();
+            var type    = source.GetType();
+            while (type != typeof(Entity))
             {
                 foreach (var p in type.GetProperties())
                 {
                     if (p.CanWrite && ((!p.PropertyType.IsClass && !typeof(System.Collections.IEnumerable).IsAssignableFrom(p.PropertyType)) || p.PropertyType == typeof(string)))
-                        hash.Add(p.GetValue(source, null));
+                        objList.Add(p.GetValue(source, null));
                 }
-                if(type.BaseType == null) break;
+                if (type.BaseType == null) break;
                 type = type.BaseType;
             }
             
-
-            return hash.ToHashCode();
+            return MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(objList)));
         }
 
         private static bool IsEqual(object? val1, object? val2)

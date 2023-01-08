@@ -1,15 +1,15 @@
 ﻿using System.Linq;
-using NAIHelper.Models;
 using NAIHelper.Utils;
+using Newtonsoft.Json;
 using ReactiveUI;
 
 namespace NAIHelper.ViewModels.UI_Entities;
 
-public class UI_Group : UI_Entity
+public class Group : Entity
 {
     #region Entity properties
 
-    private string _name;
+    private string _name = string.Empty;
     public string Name
     {
         get => _name;
@@ -30,18 +30,26 @@ public class UI_Group : UI_Entity
         set => this.RaiseAndSetIfChanged(ref _note, value);
     }
 
-    private UI_Session _uI_Session;
-    public UI_Session UI_Session
+    private int _idSession;
+    public int IdSession
     {
-        get => _uI_Session;
-        set => this.RaiseAndSetIfChanged(ref _uI_Session, value);
+        get => _idSession;
+        set => this.RaiseAndSetIfChanged(ref _idSession, value);
     }
 
-    private ObservableCollectionWithSelectedItem<UI_GroupTag> _uI_GroupTags;
-    public ObservableCollectionWithSelectedItem<UI_GroupTag> UI_GroupTags
+    private Session _session;
+    [JsonIgnore]
+    public Session Session
     {
-        get => _uI_GroupTags;
-        set => this.RaiseAndSetIfChanged(ref _uI_GroupTags, value);
+        get => _session;
+        set => this.RaiseAndSetIfChanged(ref _session, value);
+    }
+
+    private ObservableCollectionWithSelectedItem<GroupTag> _groupTags;
+    public ObservableCollectionWithSelectedItem<GroupTag> GroupTags
+    {
+        get => _groupTags;
+        set => this.RaiseAndSetIfChanged(ref _groupTags, value);
     }
 
     #endregion
@@ -51,16 +59,15 @@ public class UI_Group : UI_Entity
 
 
     #endregion
-
-
+    
     #region Ctor
 
-    public UI_Group()
+    public Group()
     {
         
     }
 
-    public UI_Group(string name, int order = 0, string? note = null)
+    public Group(string name, int order = 0, string? note = null)
     {
         _name = name;
         _order = order;

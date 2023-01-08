@@ -1,9 +1,10 @@
-﻿using NAIHelper.Models;
+﻿using System.Linq;
+using NAIHelper.Utils;
 using ReactiveUI;
 
 namespace NAIHelper.ViewModels.UI_Entities;
 
-public class UI_Tag : UI_Entity
+public class Session : Entity
 {
     #region Entity properties
 
@@ -13,26 +14,18 @@ public class UI_Tag : UI_Entity
         get => _name;
         set => this.RaiseAndSetIfChanged(ref _name, value);
     }
-    private string? _link;
-    public string? Link
-    {
-        get => _link;
-        set => this.RaiseAndSetIfChanged(ref _link, value);
-    }
-
     private string? _note;
     public string? Note
     {
         get => _note;
         set => this.RaiseAndSetIfChanged(ref _note, value);
     }
-    
 
-    private UI_Dir _uI_Dir;
-    public UI_Dir UI_Dir
+    private ObservableCollectionWithSelectedItem<Group> _groups;
+    public ObservableCollectionWithSelectedItem<Group> Groups
     {
-        get => _uI_Dir;
-        set => this.RaiseAndSetIfChanged(ref _uI_Dir, value);
+        get => _groups;
+        set => this.RaiseAndSetIfChanged(ref _groups, value);
     }
 
     #endregion
@@ -46,15 +39,14 @@ public class UI_Tag : UI_Entity
 
     #region Ctor
 
-    public UI_Tag()
+    public Session()
     {
         
     }
 
-    public UI_Tag(string name, string? link = null, string? note = null)
+    public Session(string name, string? note = null)
     {
         _name = name;
-        _link = link;
         _note = note;
     }
 
