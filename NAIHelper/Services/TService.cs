@@ -10,7 +10,7 @@ using RestSharp;
 
 namespace NAIHelper.Services;
 
-public abstract class TService<T> where T : Entity
+public abstract class TService<T> where T : IdEntity
 {
     protected readonly string ApiPath;
 

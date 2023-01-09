@@ -61,11 +61,11 @@ namespace NAIHelper.Utils
         //    return hash.ToHashCode();
         //}
 
-        public static byte[] GetHash<T>(this T source) where T : class, new()
+        public static byte[] GetHash<T>(this T source) where T : class
         {
             var objList = new List<object?>();
             var type    = source.GetType();
-            while (type != typeof(Entity))
+            while (type != typeof(IdEntity))
             {
                 foreach (var p in type.GetProperties())
                 {

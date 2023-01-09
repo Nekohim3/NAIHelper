@@ -20,6 +20,21 @@ namespace NAIHelper.Utils
 
         public DanbooruDownloader()
         {
+            
+        }
+
+        public void DownloadFromFile()
+        {
+            var lst = JsonConvert.DeserializeObject<List<Dir>>(File.ReadAllText("DirTree.json"));
+        }
+
+        public void ManualMigrate()
+        {
+
+        }
+
+        public void DownloadFromSite()
+        {
             g.Driver = new Driver();
             g.Driver.Init();
             DownloadAll();

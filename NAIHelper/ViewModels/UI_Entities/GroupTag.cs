@@ -3,7 +3,7 @@ using ReactiveUI;
 
 namespace NAIHelper.ViewModels.UI_Entities;
 
-public class GroupTag : Entity
+public class GroupTag : IdEntity
 {
     #region Entity properties
 

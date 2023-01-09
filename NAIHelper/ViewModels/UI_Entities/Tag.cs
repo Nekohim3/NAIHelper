@@ -1,4 +1,5 @@
 ﻿using System;
+using NAIHelper.Utils;
 using NAIHelper.Utils.Interfaces;
 using Newtonsoft.Json;
 using ReactiveUI;
@@ -6,7 +7,7 @@ using ReactiveUI;
 namespace NAIHelper.ViewModels.UI_Entities;
 
 [JsonObject]
-public class Tag : Entity, ISelected, IDraggable
+public class Tag : IdEntity, ISelected, IDraggable
 {
     #region Entity properties
 
@@ -37,13 +38,12 @@ public class Tag : Entity, ISelected, IDraggable
         get => _idDir;
         set => this.RaiseAndSetIfChanged(ref _idDir, value);
     }
-
-    private Dir? _dir;
-    [JsonIgnore]
-    public Dir? Dir
+    
+    private ObservableCollectionWithSelectedItem<Dir> _dirs = new();
+    public ObservableCollectionWithSelectedItem<Dir> Dirs
     {
-        get => _dir;
-        set => this.RaiseAndSetIfChanged(ref _dir, value);
+        get => _dirs;
+        set => this.RaiseAndSetIfChanged(ref _dirs, value);
     }
 
     #endregion

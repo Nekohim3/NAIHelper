@@ -9,7 +9,7 @@ using ReactiveUI;
 namespace NAIHelper.ViewModels.UI_Entities;
 
 [JsonObject]
-public class Dir : Entity, ISelected, IExpanded
+public class Dir : IdEntity, ISelected, IExpanded
 {
     #region Entity properties
 
@@ -42,7 +42,6 @@ public class Dir : Entity, ISelected, IExpanded
     }
 
     private Dir? _parentDir;
-    [JsonIgnore]
     public Dir? ParentDir
     {
         get => _parentDir;
@@ -119,7 +118,7 @@ public class Dir : Entity, ISelected, IExpanded
     public void AddTag(Tag tag)
     {
         Tags.Add(tag);
-        tag.Dir = this;
+        //tag.Dir = this;
     }
 
     public void AddTags(IEnumerable<Tag> tags)

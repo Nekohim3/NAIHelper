@@ -4,7 +4,7 @@ using ReactiveUI;
 
 namespace NAIHelper.ViewModels.UI_Entities;
 
-public class Session : Entity
+public class Session : IdEntity
 {
     #region Entity properties
 

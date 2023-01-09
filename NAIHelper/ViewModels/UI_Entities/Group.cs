@@ -5,7 +5,7 @@ using ReactiveUI;
 
 namespace NAIHelper.ViewModels.UI_Entities;
 
-public class Group : Entity
+public class Group : IdEntity
 {
     #region Entity properties
 
