@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using NAIHelper.ViewModels.UI_Entities.BaseEntities;
+using Newtonsoft.Json;
 using ReactiveUI;
 
 namespace NAIHelper.ViewModels.UI_Entities;

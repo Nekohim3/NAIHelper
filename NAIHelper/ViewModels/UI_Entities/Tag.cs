@@ -1,6 +1,7 @@
 ﻿using System;
 using NAIHelper.Utils;
 using NAIHelper.Utils.Interfaces;
+using NAIHelper.ViewModels.UI_Entities.BaseEntities;
 using Newtonsoft.Json;
 using ReactiveUI;
 
@@ -12,33 +13,33 @@ public class Tag : IdEntity, ISelected, IDraggable
     #region Entity properties
 
     private string _name = string.Empty;
-    public string Name
+    public virtual string Name
     {
         get => _name;
         set => this.RaiseAndSetIfChanged(ref _name, value);
     }
 
     private string? _link;
-    public string? Link
+    public virtual string? Link
     {
         get => _link;
         set => this.RaiseAndSetIfChanged(ref _link, value);
     }
 
     private string? _note;
-    public string? Note
+    public virtual string? Note
     {
         get => _note;
         set => this.RaiseAndSetIfChanged(ref _note, value);
     }
 
-    private int _idDir;
-    public int IdDir
-    {
-        get => _idDir;
-        set => this.RaiseAndSetIfChanged(ref _idDir, value);
-    }
-    
+    //private int _idDir;
+    //public int IdDir
+    //{
+    //    get => _idDir;
+    //    set => this.RaiseAndSetIfChanged(ref _idDir, value);
+    //}
+
     private ObservableCollectionWithSelectedItem<Dir> _dirs = new();
     public ObservableCollectionWithSelectedItem<Dir> Dirs
     {
@@ -51,6 +52,7 @@ public class Tag : IdEntity, ISelected, IDraggable
     #region NestedProperties
 
     private bool _isSelected;
+    [JsonIgnore]
     public bool IsSelected
     {
         get => _isSelected;
@@ -58,6 +60,7 @@ public class Tag : IdEntity, ISelected, IDraggable
     }
 
     private bool _isDrag;
+    [JsonIgnore]
     public bool IsDrag
     {
         get => _isDrag;

@@ -40,8 +40,7 @@ namespace NAIHelper.Utils
         {
             Service = ChromeDriverService.CreateDefaultService();
             Service.HideCommandPromptWindow = true;
-            Options = new ChromeOptions();
-            Chrome = new ChromeDriver(Service, Options);
+            Chrome = new ChromeDriver(Service);
             JsExec = Chrome;
             Act = new Actions(Chrome);
 

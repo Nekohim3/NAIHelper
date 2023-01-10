@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RestSharp;
 
-namespace NAIHelper.Utils
+namespace NAIHelper.Utils.Extensions
 {
     public static class RestRequestExtensions
     {

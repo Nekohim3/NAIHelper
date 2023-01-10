@@ -52,6 +52,7 @@ public class TagTree : ViewModelBase
 
     private DirService      _dirService      = new();
     private TagService      _tagService      = new();
+    private DirTagService   _dirTagService   = new();
     private SessionService  _sessionService  = new();
     private GroupService    _groupService    = new();
     private GroupTagService _groupTagService = new();
@@ -77,18 +78,22 @@ public class TagTree : ViewModelBase
         SearchedTags.Clear();
         _dirList = await _dirService.Get();
         _tagList = await _tagService.Get();
-
-        var dirDictId = _dirList.ToDictionary(_ => _.Id);
-        foreach (var tag in _tagList)
-            dirDictId[tag.IdDir].AddTag(tag);
-
-        foreach (var x in dirDictId)
+        var dirTagList = await _dirTagService.Get();
+        var dirDictId  = _dirList.ToDictionary(_ => _.Id);
+        var tagDictId  = _tagList.ToDictionary(_ => _.Id);
+        foreach (var x in _dirList)
         {
-            if (x.Value.IdParent.HasValue)
-                dirDictId[x.Value.IdParent.Value].AddChildDir(x.Value);
+            if (x.IdParent.HasValue)
+                dirDictId[x.IdParent.Value].AddChildDir(x);
             else
-                RootDirs.Add(x.Value);
+                RootDirs.Add(x);
+            foreach (var c in dirTagList.Where(v => v.IdFirst == x.Id))
+                x.Tags.Add(tagDictId[c.IdSecond]);
         }
+
+        foreach (var x in _tagList)
+        foreach (var c in dirTagList.Where(v => v.IdSecond == x.Id))
+            x.Dirs.Add(dirDictId[c.IdFirst]);
     }
 
     public async void LoadSessions(bool remember = false)
@@ -103,7 +108,8 @@ public class TagTree : ViewModelBase
 
     public void RestoreExpandedAndSelectedDirsTags()
     {
-        foreach (var x in _dirList.Where(x => _expandedIds.Contains(x.Id))) x.IsExpanded = true;
+        foreach (var x in _dirList.Where(x => _expandedIds.Contains(x.Id)))
+            x.IsExpanded = true;
         RootDirs.SelectedItem = _dirList.FirstOrDefault(x => x.Id == _selectedId);
     }
 }

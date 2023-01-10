@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NAIHelper.Utils.Extensions;
 
 namespace NAIHelper.Utils
 {
@@ -17,34 +18,58 @@ namespace NAIHelper.Utils
     {
         public static string    BaseAddress = "https://danbooru.donmai.us";
         public        List<Dir> DirTree     = new();
+        
+        public Dictionary<string, Tag> AllTags = new();
 
         public DanbooruDownloader()
         {
             
         }
 
-        public void DownloadFromFile()
+        public async void DownloadFromFile()
         {
-            var lst = JsonConvert.DeserializeObject<List<Dir>>(File.ReadAllText("DirTree.json"));
+            var lst  = JsonConvert.DeserializeObject<List<Dir>>(await File.ReadAllTextAsync("DirTree.json"));
+            var dirs = new List<Dir>();
+            var tags = new List<Tag>();
+            foreach (var x in lst)
+            {
+                dirs.Add(x);
+                GetDirsTagsRec(dirs, tags, x);
+            }
+            var service = new DirService();
+            await service.Create(lst);
         }
 
-        public void ManualMigrate()
+        private void GetDirsTagsRec(List<Dir> dirs, List<Tag> tags, Dir dir)
         {
-
+            dirs.AddRange(dir.Dirs);
+            tags.AddRange(dir.Tags);
+            foreach (var x in dir.Dirs)
+                GetDirsTagsRec(dirs, tags, x);
         }
+        
 
         public void DownloadFromSite()
         {
             g.Driver = new Driver();
             g.Driver.Init();
             DownloadAll();
-            g.Driver.Chrome.Quit();
         }
 
         public async void DownloadAll()
         {
             DirTree = DownloadDirs().ToList();
             LoadTagsForDirTree();
+            g.Driver.Chrome.Quit(); 
+            var dirs = new List<Dir>();
+            var                         tags = new List<Tag>();
+            foreach (var x in DirTree)
+            {
+                dirs.Add(x);
+                GetDirsTagsRec(dirs, tags, x);
+            }
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings() { MaxDepth = 1024, TypeNameHandling = TypeNameHandling.None, ReferenceLoopHandling = ReferenceLoopHandling.Ignore, PreserveReferencesHandling = PreserveReferencesHandling.Objects, NullValueHandling = NullValueHandling.Ignore };
+
             await File.WriteAllTextAsync("DirTree.json", JsonConvert.SerializeObject(DirTree));
             var service = new DirService();
             await service.Create(DirTree);
@@ -75,9 +100,10 @@ namespace NAIHelper.Utils
             {
                 if (ul.PreviousSibling.InnerText.ToLower().Contains("see also")) continue;
                 if (ul.PreviousSibling.InnerText.ToLower().Contains("characters")) continue;
-                var dir = new Dir(ul.PreviousSibling.InnerText);
+                var dir  = new Dir(ul.PreviousSibling.InnerText.Trim());
                 if (dir.Name.ToLower().Contains("tag group:"))
                     dir.Name = dir.Name.Remove(0, "tag group:".Length);
+                dir.Name = dir.Name.Trim().FirstCharToUpper();
                 LoadDirChilds(dir, ul);
                 dirsTree.Add(dir);
             }
@@ -93,21 +119,37 @@ namespace NAIHelper.Utils
                     if (aNode != null)
                     {
                         var newDir = new Dir();
-                        if (aNode.InnerText.ToLower().Contains("tag group:"))
+                        if (aNode.InnerText.Trim().ToLower().Contains("tag group:"))
                         {
                             newDir.Name = aNode.InnerText.Remove(0, "tag group:".Length);
                         }
-                        else if (aNode.InnerText.ToLower().Contains("list of "))
+                        else if (aNode.InnerText.Trim().ToLower().Contains("list of "))
                         {
                             newDir.Name = aNode.InnerText.Remove(0, "list of ".Length);
                         }
                         else
                         {
-                            newDir.Name = aNode.InnerText;
-                            dir.Tags.Add(new Tag(aNode.InnerText, aNode.GetAttributeValue("href", null)));
+                            
+                            newDir.Name = aNode.InnerText.Trim();
+                            
+                            var tagName = aNode.InnerText.Trim().FirstCharToUpper();
+                            if (AllTags.TryGetValue(tagName, out var tag))
+                            {
+                                tag.Dirs.Add(newDir);
+                            }
+                            else
+                            {
+                                var newTag = new Tag(tagName, aNode.GetAttributeValue("href", null));
+                                newTag.Dirs.Add(newDir);
+                                newDir.Tags.Add(newTag);
+                                AllTags.Add(newTag.Name, newTag);
+                            }
+
+                            //dir.Tags.Add(new Tag(aNode.InnerText.Trim().FirstCharToUpper(), aNode.GetAttributeValue("href", null)));
                         }
 
                         newDir.Link = aNode.GetAttributeValue("href", null);
+                        dir.Name    = dir.Name.Trim().FirstCharToUpper();
                         dir.Dirs.Add(newDir);
                     }
                 }
@@ -155,7 +197,7 @@ namespace NAIHelper.Utils
                         var level = int.Parse(node.Name.Substring(1, 1));
                         if (level > currentParent.level)
                         {
-                            var newDir = new Dir(node.InnerText);
+                            var newDir = new Dir(node.InnerText.Trim().FirstCharToUpper());
                             currentParent.dir.Dirs.Add(newDir);
                             parentList.Add((newDir, level));
                             currentParent = parentList.Last();
@@ -164,7 +206,7 @@ namespace NAIHelper.Utils
                         {
                             parentList.Remove(currentParent);
                             currentParent = parentList.Last();
-                            var newDir = new Dir(node.InnerText);
+                            var newDir = new Dir(node.InnerText.Trim().FirstCharToUpper());
                             currentParent.dir.Dirs.Add(newDir);
                             parentList.Add((newDir, level));
                             currentParent = parentList.Last();
@@ -177,7 +219,7 @@ namespace NAIHelper.Utils
                                 currentParent = parentList.Last();
                             }
 
-                            var newDir = new Dir(node.InnerText);
+                            var newDir = new Dir(node.InnerText.Trim().FirstCharToUpper());
                             currentParent.dir.Dirs.Add(newDir);
                             parentList.Add((newDir, level));
                             currentParent = parentList.Last();
@@ -188,8 +230,21 @@ namespace NAIHelper.Utils
                         var lis = node.Descendants("li").Where(x => x.ChildNodes.Any(c => c.Name.ToLower() == "a")).ToList();
                         foreach (var x in lis)
                             foreach (var c in x.ChildNodes.Where(c => c.Name.ToLower() == "a"))
-                                if (!x.InnerText.ToLower().StartsWith("tag group:"))
-                                    currentParent.dir.Tags.Add(new Tag(c.InnerText, c.GetAttributeValue("href", null)));
+                            if (!x.InnerText.ToLower().StartsWith("tag group:"))
+                            {
+                                var tagName = c.InnerText.Trim().FirstCharToUpper();
+                                if (AllTags.TryGetValue(tagName, out var tag))
+                                {
+                                    tag.Dirs.Add(currentParent.dir);
+                                }
+                                else
+                                {
+                                    var newTag = new Tag(tagName, c.GetAttributeValue("href", null));
+                                    newTag.Dirs.Add(currentParent.dir);
+                                    currentParent.dir.Tags.Add(newTag);
+                                    AllTags.Add(newTag.Name, newTag);
+                                }
+                            }
                     }
                     else
                     {

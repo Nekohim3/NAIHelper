@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NAIHelper.Utils;
+using NAIHelper.ViewModels.UI_Entities.BaseEntities;
 using Newtonsoft.Json;
 using ReactiveUI;
 

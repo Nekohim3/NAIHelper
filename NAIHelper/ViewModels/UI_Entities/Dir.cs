@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NAIHelper.Utils;
 using NAIHelper.Utils.Interfaces;
+using NAIHelper.ViewModels.UI_Entities.BaseEntities;
 using Newtonsoft.Json;
 using ReactiveUI;
 
@@ -14,28 +15,32 @@ public class Dir : IdEntity, ISelected, IExpanded
     #region Entity properties
 
     private string _name = string.Empty;
-    public string Name
+    [TrackInclude]
+    public virtual string Name
     {
         get => _name;
         set => this.RaiseAndSetIfChanged(ref _name, value);
     }
 
     private string? _link;
-    public string? Link
+    [TrackInclude]
+    public virtual string? Link
     {
         get => _link;
         set => this.RaiseAndSetIfChanged(ref _link, value);
     }
 
     private string? _note;
-    public string? Note
+    [TrackInclude]
+    public virtual string? Note
     {
         get => _note;
         set => this.RaiseAndSetIfChanged(ref _note, value);
     }
 
     private int? _idParent;
-    public int? IdParent
+    [TrackInclude]
+    public virtual int? IdParent
     {
         get => _idParent;
         set => this.RaiseAndSetIfChanged(ref _idParent, value);
@@ -67,6 +72,7 @@ public class Dir : IdEntity, ISelected, IExpanded
     #region NestedProperties
 
     private bool _isExpanded;
+    [JsonIgnore]
     public bool IsExpanded
     {
         get => _isExpanded;
@@ -74,6 +80,7 @@ public class Dir : IdEntity, ISelected, IExpanded
     }
 
     private bool _isSelected;
+    [JsonIgnore]
     public bool IsSelected
     {
         get => _isSelected;
@@ -118,7 +125,7 @@ public class Dir : IdEntity, ISelected, IExpanded
     public void AddTag(Tag tag)
     {
         Tags.Add(tag);
-        //tag.Dir = this;
+        tag.Dirs.Add(this);
     }
 
     public void AddTags(IEnumerable<Tag> tags)
