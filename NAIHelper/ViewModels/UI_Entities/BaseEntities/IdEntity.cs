@@ -3,10 +3,10 @@ using Newtonsoft.Json;
 
 namespace NAIHelper.ViewModels.UI_Entities.BaseEntities;
 
-[JsonObject]
 public abstract class IdEntity : Entity // : TrackedEntity
 {
     [TrackInclude]
+    [JsonProperty]
     public virtual int Id { get; set; }
 
     public override bool Equals(object? o)

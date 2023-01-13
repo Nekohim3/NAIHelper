@@ -9,13 +9,13 @@ using ReactiveUI;
 
 namespace NAIHelper.ViewModels.UI_Entities;
 
-[JsonObject]
 public class Dir : IdEntity, ISelected, IExpanded
 {
     #region Entity properties
 
     private string _name = string.Empty;
     [TrackInclude]
+    [JsonProperty]
     public virtual string Name
     {
         get => _name;
@@ -24,6 +24,7 @@ public class Dir : IdEntity, ISelected, IExpanded
 
     private string? _link;
     [TrackInclude]
+    [JsonProperty]
     public virtual string? Link
     {
         get => _link;
@@ -32,6 +33,7 @@ public class Dir : IdEntity, ISelected, IExpanded
 
     private string? _note;
     [TrackInclude]
+    [JsonProperty]
     public virtual string? Note
     {
         get => _note;
@@ -40,6 +42,7 @@ public class Dir : IdEntity, ISelected, IExpanded
 
     private int? _idParent;
     [TrackInclude]
+    [JsonProperty]
     public virtual int? IdParent
     {
         get => _idParent;
@@ -72,7 +75,6 @@ public class Dir : IdEntity, ISelected, IExpanded
     #region NestedProperties
 
     private bool _isExpanded;
-    [JsonIgnore]
     public bool IsExpanded
     {
         get => _isExpanded;
@@ -80,7 +82,6 @@ public class Dir : IdEntity, ISelected, IExpanded
     }
 
     private bool _isSelected;
-    [JsonIgnore]
     public bool IsSelected
     {
         get => _isSelected;
@@ -90,6 +91,8 @@ public class Dir : IdEntity, ISelected, IExpanded
     #endregion
 
     #region Properties
+
+    public string Path => IdParent.HasValue ? $"{ParentDir?.Path} > {Name}" : Name;
 
     #endregion
 

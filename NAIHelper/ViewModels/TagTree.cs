@@ -44,11 +44,11 @@ public class TagTree : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _sessions, value);
     }
 
-    private List<Dir>      _dirList      = new();
-    private List<Tag>      _tagList      = new();
-    private List<Session>  _sessionList  = new();
-    private List<Group>    _groupList    = new();
-    private List<GroupTag> _groupTagList = new();
+    private Dictionary<int, Dir> _dirList      = new();
+    private Dictionary<int, Tag> _tagList      = new();
+    private Dictionary<int, Session>  _sessionList  = new();
+    private Dictionary<int, Group>    _groupList    = new();
+    private Dictionary<int, GroupTag> _groupTagList = new();
 
     private DirService      _dirService      = new();
     private TagService      _tagService      = new();
@@ -65,7 +65,7 @@ public class TagTree : ViewModelBase
     {
     }
 
-    public void LoadAdd(bool remember = false)
+    public void Load(bool remember = false)
     {
         LoadTags(remember);
         LoadSessions(remember);
@@ -76,24 +76,22 @@ public class TagTree : ViewModelBase
         RootDirs.Clear();
         Tags.Clear();
         SearchedTags.Clear();
-        _dirList = await _dirService.Get();
-        _tagList = await _tagService.Get();
+        _dirList = (await _dirService.Get()).ToDictionary(_ => _.Id);
+        _tagList = (await _tagService.Get()).ToDictionary(_ => _.Id);
         var dirTagList = await _dirTagService.Get();
-        var dirDictId  = _dirList.ToDictionary(_ => _.Id);
-        var tagDictId  = _tagList.ToDictionary(_ => _.Id);
         foreach (var x in _dirList)
         {
-            if (x.IdParent.HasValue)
-                dirDictId[x.IdParent.Value].AddChildDir(x);
+            if (x.Value.IdParent.HasValue)
+                _dirList[x.Value.IdParent.Value].AddChildDir(x.Value);
             else
-                RootDirs.Add(x);
-            foreach (var c in dirTagList.Where(v => v.IdFirst == x.Id))
-                x.Tags.Add(tagDictId[c.IdSecond]);
+                RootDirs.Add(x.Value);
+            foreach (var c in dirTagList.Where(v => v.IdFirst == x.Value.Id))
+                x.Value.Tags.Add(_tagList[c.IdSecond]);
         }
 
         foreach (var x in _tagList)
-        foreach (var c in dirTagList.Where(v => v.IdSecond == x.Id))
-            x.Dirs.Add(dirDictId[c.IdFirst]);
+        foreach (var c in dirTagList.Where(v => v.IdSecond == x.Value.Id))
+            x.Value.Dirs.Add(_dirList[c.IdFirst]);
     }
 
     public async void LoadSessions(bool remember = false)
@@ -102,14 +100,14 @@ public class TagTree : ViewModelBase
 
     public void RememberExpandedAndSelectedDirsTags()
     {
-        _expandedIds = _dirList.Where(x => x.IsExpanded && x.Id > 0).Select(x => x.Id).ToList();
+        _expandedIds = _dirList.Where(x => x.Value.IsExpanded && x.Value.Id > 0).Select(x => x.Value.Id).ToList();
         _selectedId  = RootDirs.SelectedItem?.Id ?? 0;
     }
 
     public void RestoreExpandedAndSelectedDirsTags()
     {
-        foreach (var x in _dirList.Where(x => _expandedIds.Contains(x.Id)))
-            x.IsExpanded = true;
-        RootDirs.SelectedItem = _dirList.FirstOrDefault(x => x.Id == _selectedId);
+        foreach (var x in _dirList.Where(x => _expandedIds.Contains(x.Value.Id)))
+            x.Value.IsExpanded = true;
+        RootDirs.SelectedItem = _dirList.FirstOrDefault(x => x.Value.Id == _selectedId).Value;
     }
 }

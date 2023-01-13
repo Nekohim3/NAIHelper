@@ -25,7 +25,7 @@ public abstract class ManyToManyService<T, T1, T2> where T1 : IdEntity where T2 
 
     public virtual async Task<List<T>> Get()
     {
-        var eList = await g.Client.GetAsync<List<T>>(new RestRequest(ApiPath));
+        var eList = await g.ApiClient.GetAsync<List<T>>(new RestRequest(ApiPath));
         //if (eList != null)
         //    foreach (var x in eList)
         //        x.CreateHash();
@@ -34,7 +34,7 @@ public abstract class ManyToManyService<T, T1, T2> where T1 : IdEntity where T2 
 
     public virtual async Task<List<T>> GetByFirst(int id)
     {
-        var eList = await g.Client.GetAsync<List<T>>(new RestRequest($"{ApiPath}/ByFirst/{id}"));
+        var eList = await g.ApiClient.GetAsync<List<T>>(new RestRequest($"{ApiPath}/ByFirst/{id}"));
         //if (eList != null)
         //    foreach (var x in eList)
         //        x.CreateHash();
@@ -43,7 +43,7 @@ public abstract class ManyToManyService<T, T1, T2> where T1 : IdEntity where T2 
 
     public virtual async Task<List<T>> GetBySecond(int id)
     {
-        var eList = await g.Client.GetAsync<List<T>>(new RestRequest($"{ApiPath}/BySecond/{id}"));
+        var eList = await g.ApiClient.GetAsync<List<T>>(new RestRequest($"{ApiPath}/BySecond/{id}"));
         //if (eList != null)
         //    foreach (var x in eList)
         //        x.CreateHash();
@@ -52,11 +52,11 @@ public abstract class ManyToManyService<T, T1, T2> where T1 : IdEntity where T2 
 
     public virtual async Task<T> GetByBoth(int idFirst, int idSecond)
     {
-        var e = await g.Client.GetAsync<T>(new RestRequest($"{ApiPath}/ByBoth/{idFirst}/{idSecond}"));
+        var e = await g.ApiClient.GetAsync<T>(new RestRequest($"{ApiPath}/ByBoth/{idFirst}/{idSecond}"));
         //if (e != null)
         //    e.CreateHash();
         return e;
     }
 
-    public virtual async Task<bool> Delete(T t) => await g.Client.DeleteAsync<bool>(t.GetTRequest(ApiPath));
+    public virtual async Task<bool> Delete(T t) => await g.ApiClient.DeleteAsync<bool>(t.GetTRequest(ApiPath));
 }

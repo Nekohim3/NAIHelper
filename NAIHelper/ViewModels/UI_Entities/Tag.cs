@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NAIHelper.Utils;
 using NAIHelper.Utils.Interfaces;
 using NAIHelper.ViewModels.UI_Entities.BaseEntities;
@@ -7,12 +8,13 @@ using ReactiveUI;
 
 namespace NAIHelper.ViewModels.UI_Entities;
 
-[JsonObject]
 public class Tag : IdEntity, ISelected, IDraggable
 {
     #region Entity properties
 
     private string _name = string.Empty;
+    [TrackInclude]
+    [JsonProperty]
     public virtual string Name
     {
         get => _name;
@@ -20,6 +22,8 @@ public class Tag : IdEntity, ISelected, IDraggable
     }
 
     private string? _link;
+    [TrackInclude]
+    [JsonProperty]
     public virtual string? Link
     {
         get => _link;
@@ -27,6 +31,8 @@ public class Tag : IdEntity, ISelected, IDraggable
     }
 
     private string? _note;
+    [TrackInclude]
+    [JsonProperty]
     public virtual string? Note
     {
         get => _note;
@@ -52,7 +58,6 @@ public class Tag : IdEntity, ISelected, IDraggable
     #region NestedProperties
 
     private bool _isSelected;
-    [JsonIgnore]
     public bool IsSelected
     {
         get => _isSelected;
@@ -60,7 +65,6 @@ public class Tag : IdEntity, ISelected, IDraggable
     }
 
     private bool _isDrag;
-    [JsonIgnore]
     public bool IsDrag
     {
         get => _isDrag;
@@ -70,6 +74,8 @@ public class Tag : IdEntity, ISelected, IDraggable
     #endregion
 
     #region Properties
+
+    public string Paths => string.Join('\n', Dirs.Select(_ => _.Path));
 
     #endregion
 

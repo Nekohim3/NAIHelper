@@ -5,20 +5,78 @@
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
-
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Utils/Controls/GroupBox.axaml"></ResourceInclude>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
     <Application.Styles>
 		<SimpleTheme Mode="Dark"/>
-        <Style Selector="Button">
-            <Setter Property="Height" Value="22" />
-            <Setter Property="Padding" Value="3,0,3,0"/>
-            <Setter Property="Margin" Value="1" />
-            <Setter Property="MinWidth" Value="50" />
+		<Style Selector="Button.Simple">   
+			<Setter Property="Height" Value="22" />
+			<Setter Property="Padding" Value="3,0,3,0"/>
+			<Setter Property="Margin" Value="1" />
+			<Setter Property="MinWidth" Value="50" />
+		</Style>
+		<Style Selector="Button.Image">
+			<Setter Property="Height" Value="25" />
+			<Setter Property="Padding" Value="0"/>
+			<Setter Property="Margin" Value="0" />
+			<Setter Property="Width" Value="25" />
+			<Setter Property="MinWidth" Value="25" />
+			<Setter Property="Background" Value="#00000000"/>
+			<Setter Property="BorderThickness" Value="0"/>
+		</Style>
+		<Style Selector="Button.Image:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#443333"/>
+        </Style>
+        <Style Selector="ToggleButton">
+			<Setter Property="Height" Value="16" />
+			<Setter Property="Width" Value="16" />
         </Style>
         <Style Selector="ToggleButton.NotTreeView">
             <Setter Property="Height" Value="22" />
             <Setter Property="Padding" Value="3,0,3,0"/>
             <Setter Property="Margin" Value="1" />
             <Setter Property="MinWidth" Value="50" />
+        </Style>
+
+		<Style Selector="ToggleButton.NotTreeView:pressed /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="#443333"/>
+		</Style>
+		<Style Selector="ToggleButton.NotTreeView:checked /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#443333"/>
+        </Style>
+		<Style Selector="ToggleButton.Image">
+			<Setter Property="Height" Value="25" />
+			<Setter Property="Padding" Value="0"/>
+			<Setter Property="Margin" Value="0" />
+			<Setter Property="Width" Value="25" />
+			<Setter Property="MinWidth" Value="25" />
+			<Setter Property="Background" Value="#00000000"/>
+			<Setter Property="BorderThickness" Value="0"/>
+		</Style>
+
+        <Style Selector="Button.TabButton">
+			<Setter Property="Padding" Value="3,0,3,0"/>
+			<Setter Property="MinWidth" Value="100" />
+			<Setter Property="MaxWidth" Value="100"/>
+			<Setter Property="Background" Value="#222222"/>
+			<Setter Property="BorderBrush" Value="#cc3333"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+		</Style>
+		<Style Selector="Button.TabButton.Selected">
+            <Setter Property="Background" Value="#222222"/>
+            <Setter Property="BorderThickness" Value="1,0,1,0"/>
+        </Style>
+
+		<Style Selector="Button.TabButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="#442222"/>
+		</Style>
+		<Style Selector="Button.TabButton:pressed  /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#151515"/>
         </Style>
         <Style Selector="TextBox">
             <Setter Property="Height" Value="22" />
@@ -33,6 +91,46 @@
         </Style>
         <Style Selector="StackPanel.ToolBar">
             <Setter Property="Orientation" Value="Horizontal"/>
+        </Style>
+		<Style Selector="TreeViewItem /template/ Border#SelectionBorder:pointerover">
+			<Setter Property="Background" Value="#442222"/>
+		</Style>
+		<Style Selector="TreeViewItem:selected /template/ Border#SelectionBorder">
+			<Setter Property="Background" Value="#663333"/>
+		</Style>
+		<Style Selector="TreeViewItem:selected /template/ Border#SelectionBorder:pointerover">
+			<Setter Property="Background" Value="#884444"/>
+		</Style>
+		<Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#442222"/>
+        </Style>
+        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="#663333"/>
+        </Style>
+        <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#884444"/>
+        </Style>
+		<Style Selector="ScrollBar /template/ RepeatButton">
+			<Setter Property="IsVisible" Value="False"/>
+            <Setter Property="Background" Value="#222222"/>
+		</Style>
+		<Style Selector="ScrollBar:vertical">
+			<Setter Property="Width" Value="10"/>
+		</Style>
+		<Style Selector="ScrollBar:horizontal">
+            <Setter Property="Height" Value="10"/>
+        </Style>
+		<Style Selector="ScrollBar /template/ Thumb">
+			<Setter Property="Background" Value="#444444"/>
+			<Setter Property="BorderThickness" Value="0"/>
+		</Style>
+		<Style Selector="ScrollBar /template/ Thumb:pointerover">
+			<Setter Property="Background" Value="#666666"/>
+			<Setter Property="BorderThickness" Value="0"/>
+		</Style>
+		<Style Selector="ScrollBar /template/ Thumb:pressed">
+            <Setter Property="Background" Value="#888888"/>
+            <Setter Property="BorderThickness" Value="0"/>
         </Style>
     </Application.Styles>
 </Application>

@@ -1,0 +1,97 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:NAIHelper.ViewModels"
+             xmlns:controls="clr-namespace:NAIHelper.Utils.Controls"
+             mc:Ignorable="d" d:DesignWidth="960" d:DesignHeight="540" MinHeight="540" MinWidth="960"
+             x:Class="NAIHelper.Views.TagTreeEditorView">
+
+    <Design.DataContext>
+        <viewModels:TagTreeEditorViewModel/>
+    </Design.DataContext>
+        <Grid ColumnDefinitions="*, 400" Background="#222222">
+			<controls:GroupBox Header="Dirs tree" Grid.Column="0" Margin="2">
+            <Grid RowDefinitions="Auto, *">
+				<Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="#cc3333">
+                    <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="2">
+                        <Button Grid.Column="0" Classes="Image" ToolTip.Tip="Add root" >
+                            <Svg Path="../Assets/Add.svg"/>
+					    </Button>
+					    <Button Grid.Column="1" Classes="Image" ToolTip.Tip="Add child">
+						    <Svg Path="../Assets/AddChild.svg"/>
+                        </Button>
+					    <Button Grid.Column="2" Classes="Image" ToolTip.Tip="Edit">
+						    <Svg Path="../Assets/Edit.svg"/>
+                        </Button>
+					    <Button Grid.Column="3" Classes="Image" ToolTip.Tip="Remove" >
+						    <Svg Path="../Assets/Delete.svg"/>
+					    </Button>
+					    <Button Grid.Column="4" Classes="Image" ToolTip.Tip="Move">
+						    <Svg Path="../Assets/Move.svg"/>
+                        </Button>
+                    </Grid>
+                </Border>
+				<Grid Grid.Row="1">
+                    <TreeView Items="{Binding TagTree.RootDirs}" SelectedItem="{Binding TagTree.RootDirs.SelectedItem}" SelectionMode="Single" Background="#222222" BorderBrush="#00000000" Padding="1">
+                        <TreeView.Styles>
+                            <Style Selector="TreeViewItem">
+                                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                            </Style>
+                            <Style Selector="Grid.Selected">
+                                <Setter Property="Background" Value="#77339933"/>
+                            </Style>
+                        </TreeView.Styles>
+                        <TreeView.ItemTemplate>
+                            <TreeDataTemplate ItemsSource="{Binding Dirs}">
+                                <Grid Classes.Selected="{Binding IsSelected}">
+                                    <TextBlock Text="{Binding Name}"/>
+                                </Grid>
+                            </TreeDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </Grid>
+            </Grid>
+            </controls:GroupBox>
+
+            <controls:GroupBox Header="Tag list" Grid.Column="1" Margin="0,2,2,2">
+			    <Grid RowDefinitions="Auto, *">
+                    <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="#cc3333">
+                        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto" Margin="2">
+                            <Button Grid.Column="0" Classes="Image" ToolTip.Tip="Add" Margin="0,0,1,0">
+                                <Svg Path="../Assets/Add.svg"/>
+                            </Button>
+                            <Button Grid.Column="1" Classes="Image" ToolTip.Tip="Edit" Margin="0,0,1,0">
+                                <Svg Path="../Assets/Edit.svg"/>
+                            </Button>
+                            <Button Grid.Column="2" Classes="Image" ToolTip.Tip="Remove" Margin="0,0,1,0">
+                                <Svg Path="../Assets/Delete.svg"/>
+                            </Button>
+					        <Button Grid.Column="3" Classes="Image" ToolTip.Tip="Link" Margin="0,0,1,0">
+						        <Svg Path="../Assets/link.svg"/>
+					        </Button>
+					        <Button Grid.Column="4" Classes="Image" ToolTip.Tip="Unlink" Margin="0,0,1,0">
+                                <Svg Path="../Assets/unlink.svg"/>
+                            </Button>
+					        <ToggleButton Grid.Column="6" Classes="NotTreeView Image" ToolTip.Tip="Show inner tags" IsChecked="{Binding ShowInnerTags}">
+                                <Svg Path="../Assets/Tree.svg"/>
+                            </ToggleButton>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Row="1">
+                        <ListBox Items="{Binding TagTree.Tags}" SelectedItem="{Binding TagTree.Tags.SelectedItem}" SelectionChanged="SelectingItemsControl_OnSelectionChanged" Background="#222222" BorderBrush="#00000000" Margin="1" Padding="0">
+                            <!-- Items="{Binding Source={x:Static novelAiHelper:g.TagTree}, Path=Tags}"
+                             SelectedItem="{Binding Source={x:Static novelAiHelper:g.TagTree}, Path=Tags.SelectedItem}" SelectionChanged="ListBoxTags_OnSelectionChanged" -->
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="#01000000" ToolTip.Tip="{Binding Paths}">
+									    <TextBlock Text="{Binding Name}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Grid>
+            </controls:GroupBox>
+        </Grid>
+</UserControl>

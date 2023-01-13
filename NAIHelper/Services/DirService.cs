@@ -20,7 +20,7 @@ public class DirService : TService<Dir>
 
     public override async Task<List<Dir>?> Create(List<Dir> tList)
     {
-        var eList = await g.Client.PostAsync<List<Dir>>(tList.GetTRequest($"{ApiPath}/Bulk"));
+        var eList = await g.ApiClient.PostAsync<List<Dir>>(tList.GetTRequest($"{ApiPath}/Bulk"));
         //foreach (var x in eList)
             //CreateHashRecursive(x);
         return eList;

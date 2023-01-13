@@ -12,6 +12,8 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+using System.IO;
+using System.Security.Principal;
 
 namespace NAIHelper.Utils
 {
@@ -38,11 +40,13 @@ namespace NAIHelper.Utils
 
         public void Init()
         {
-            Service = ChromeDriverService.CreateDefaultService();
+            Service                         = ChromeDriverService.CreateDefaultService();
             Service.HideCommandPromptWindow = true;
-            Chrome = new ChromeDriver(Service);
-            JsExec = Chrome;
-            Act = new Actions(Chrome);
+            Options                         = new ChromeOptions();
+            Options.AddArgument($"user-data-dir=C:\\ChromeData");
+            Chrome                          = new ChromeDriver(Service, Options);
+            JsExec                          = Chrome;
+            Act                             = new Actions(Chrome);
 
 
             var guid = Guid.NewGuid();
@@ -83,7 +87,6 @@ namespace NAIHelper.Utils
 
         public IWebElement WaitExist(string xpath, int timeout = 10)
         {
-            var name = "";//g.XPaths.FirstOrDefault(x => x.Value == xpath).Key;
             try
             {
                 var wait = new WebDriverWait(Chrome, TimeSpan.FromSeconds(timeout));
