@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using NAIHelper.Utils.Extensions;
-using NAIHelper.ViewModels;
-using NAIHelper.ViewModels.UI_Entities;
 using RestSharp;
 using ReactiveUI;
+using NAIHelper.Database.UI_Entities;
+using NAIHelper.ViewModels;
 
 namespace NAIHelper.Utils.Booru
 {

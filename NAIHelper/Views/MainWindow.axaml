@@ -5,7 +5,8 @@
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:pages="clr-namespace:NAIHelper.Utils.Pages"
+        xmlns:page="clr-namespace:NAIHelper.Utils.Page"
+        xmlns:controls="clr-namespace:NAIHelper.Utils.Controls"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720" MinHeight="720" MinWidth="1280"
         KeyDown="InputElement_OnKeyDown"
         x:Class="NAIHelper.Views.MainWindow"
@@ -55,14 +56,17 @@
 	<Border x:Name="AroundBorder" BorderThickness="1" BorderBrush="#cc3333">
 		<Grid RowDefinitions="Auto,0,*">
 			<!-- НЕ КРАСИТЬ! -->
-			<Grid Grid.Row="0" Height="29" ColumnDefinitions="29, Auto, *, 150" ClipToBounds="False">
+			<Grid Grid.Row="0" Height="29" ColumnDefinitions="28, Auto, *, 150" ClipToBounds="False">
 				<!-- НЕ КРАСИТЬ! -->
 				<Grid Grid.Column="0"  IsHitTestVisible="True">
+                    <Button Grid.Column="0" Classes="Image" ToolTip.Tip="Settings" Width="28" Height="28" Command="{Binding ShowConfigCmd}">
+                        <Svg Path="../Assets/Menu.svg"/>
+					</Button>
                     <!-- Кнопка меню -->
 					<!-- Идея: добавить возможность кликнуть пкм. Открывается (на всех окнах или только на одном) затемнение на все окно и рисуется дерево открытых окон -->
 					<!-- В теории тут можно вывести название программы, и возможно иконку, но тут перемещать не получится -->
 				</Grid>
-				<Grid Grid.Column="1"  IsHitTestVisible="True">
+				<Grid Grid.Column="1"  IsHitTestVisible="True" IsEnabled="{Binding !ShowConfig}">
 					<ItemsControl Items="{Binding PageManager.PageList}">
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>
@@ -70,7 +74,7 @@
 							</ItemsPanelTemplate>
 						</ItemsControl.ItemsPanel>
 						<ItemsControl.ItemTemplate>
-							<DataTemplate DataType="{x:Type pages:TPage}">
+							<DataTemplate DataType="{x:Type page:TPage}">
 								<Grid>
 									<Button Height="30" Classes="TabButton" Classes.Selected="{Binding IsSelected}" Command="{Binding SwitchCmd}" Content="{Binding Name}"/>
 									<Grid Height="1" VerticalAlignment="Bottom" IsVisible="{Binding !IsSelected}" Background="#cc3333" IsHitTestVisible="False"/>
@@ -95,6 +99,93 @@
 			<!--<Grid Grid.Row="1" Background="#cc3333" IsHitTestVisible="False"/>-->
 			<!-- Контент вкладки -->
 			<ContentControl Grid.Row="2" Content="{Binding CurrentPage.Page}" IsHitTestVisible="True"/>
+			<Grid Grid.Row="2" Background="#77000000" IsVisible="{Binding WrongSettingsDetected}">
+				<TextBlock Text="Wrong API config detected!" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="50"/>
+			</Grid>
+			<Grid Grid.Row="2" Background="#77000000" IsVisible="{Binding LoadingAPI}">
+                <TextBlock Text="LOADING..." HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="#cc3333" FontSize="50"/>
+            </Grid>
+			<Grid Grid.Row="2" Background="#77000000" ColumnDefinitions="*, Auto, *" RowDefinitions="*, Auto, *" IsVisible="{Binding ShowConfig}">
+				<Grid Grid.Column="1" Grid.Row="1" ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+					<Grid Grid.Row="0"  IsSharedSizeScope="True" Background="#222222">
+						<StackPanel Orientation="Vertical">
+							<controls:GroupBox Header="Web api">
+								<StackPanel Orientation="Vertical">
+									<controls:GroupBox Header="Connection" Classes="Config">
+										<StackPanel Orientation="Vertical">
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" SharedSizeGroup="ConfigName"/>
+													<ColumnDefinition Width="200"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="Api address"/>
+												<TextBox Grid.Column="1" Text="{Binding Settings.ApiAddress}"/>
+											</Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="ConfigName"/>
+                                                    <ColumnDefinition Width="200"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="Api host"/>
+                                                <TextBox Grid.Column="1" Text="{Binding Settings.ApiPort}"/>
+                                            </Grid>
+										</StackPanel>
+									</controls:GroupBox>
+									<controls:GroupBox Header="Database" Classes="Config">
+										<StackPanel Orientation="Vertical">
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" SharedSizeGroup="ConfigName"/>
+													<ColumnDefinition Width="200"/>
+												</Grid.ColumnDefinitions>
+												<TextBlock Grid.Column="0" Text="Database host"/>
+												<TextBox Grid.Column="1" Text="{Binding Settings.DatabaseHost}"/>
+											</Grid>
+											<Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="ConfigName"/>
+                                                    <ColumnDefinition Width="200"/>
+                                                </Grid.ColumnDefinitions>
+												<TextBlock Grid.Column="0" Text="Database port"/>
+												<TextBox Grid.Column="1" Text="{Binding Settings.DatabasePort}"/>
+											</Grid>
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" SharedSizeGroup="ConfigName"/>
+													<ColumnDefinition Width="200"/>
+												</Grid.ColumnDefinitions>
+												<TextBlock Grid.Column="0" Text="Database name"/>
+												<TextBox Grid.Column="1" Text="{Binding Settings.DatabaseName}"/>
+											</Grid>
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" SharedSizeGroup="ConfigName"/>
+													<ColumnDefinition Width="200"/>
+												</Grid.ColumnDefinitions>
+												<TextBlock Grid.Column="0" Text="Database username"/>
+												<TextBox Grid.Column="1" Text="{Binding Settings.DatabaseUsername}"/>
+											</Grid>
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" SharedSizeGroup="ConfigName"/>
+													<ColumnDefinition Width="200"/>
+												</Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="Database password"/>
+                                                <TextBox Grid.Column="1" Text="{Binding Settings.DatabasePassword}"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </controls:GroupBox>
+                                </StackPanel>
+                            </controls:GroupBox>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto,*, Auto, Auto">
+                        <Button Classes="Simple" Grid.Column="0" Content="Restore defaults" Command="{Binding RestoreConfigCmd}"/>
+						<Button Classes="Simple" Grid.Column="2" Content="Save config" Command="{Binding SaveConfigCmd}"/>
+						<Button Classes="Simple" Grid.Column="3" Content="Cancel" Command="{Binding CancelConfigCmd}"/>
+                    </Grid>
+                </Grid>
+            </Grid>
 		</Grid>
 	</Border>
 

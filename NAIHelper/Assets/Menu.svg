@@ -2,12 +2,12 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="50"
-   height="50"
-   viewBox="0 0 50 50"
+   width="56"
+   height="56"
+   viewBox="0 0 56 56"
    version="1.1"
    id="svg5"
-   sodipodi:docname="Add.svg"
+   sodipodi:docname="Menu.svg"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -26,8 +26,8 @@
      showgrid="true"
      inkscape:lockguides="false"
      inkscape:zoom="16.702703"
-     inkscape:cx="23.738673"
-     inkscape:cy="20.415857"
+     inkscape:cx="49.66262"
+     inkscape:cy="25.444983"
      inkscape:window-width="2560"
      inkscape:window-height="1417"
      inkscape:window-x="1272"
@@ -44,24 +44,24 @@
        empspacing="2"
        dotted="false" />
     <sodipodi:guide
-       position="0,50"
-       orientation="0,50"
-       id="guide151323"
+       position="0,56"
+       orientation="0,56"
+       id="guide3497"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="50,50"
-       orientation="50,0"
-       id="guide151325"
+       position="56,56"
+       orientation="56,0"
+       id="guide3499"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="50,0"
-       orientation="0,-50"
-       id="guide151327"
+       position="56,0"
+       orientation="0,-56"
+       id="guide3501"
        inkscape:locked="false" />
     <sodipodi:guide
        position="0,0"
-       orientation="-50,0"
-       id="guide151329"
+       orientation="-56,0"
+       id="guide3503"
        inkscape:locked="false" />
   </sodipodi:namedview>
   <defs
@@ -71,34 +71,24 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       style="opacity:1;fill:#cc3333;fill-opacity:1;stroke:#cc3333;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 1,1 H 49"
-       id="path129013"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="opacity:1;fill:#cc3333;fill-opacity:1;stroke:#cc3333;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 49,1 V 49"
-       id="path129015"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="opacity:1;fill:#cc3333;fill-opacity:1;stroke:#cc3333;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 49,49 H 1"
-       id="path129743"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="opacity:1;fill:#cc3333;fill-opacity:1;stroke:#cc3333;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 1,49 V 1"
-       id="path129745"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="opacity:1;fill:#cc3333;fill-opacity:1;stroke:#aaaaaa;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 11,25 H 39"
-       id="path131207"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="opacity:1;fill:#cccccc;fill-opacity:1;stroke:#aaaaaa;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 25,11 V 39"
+       style="opacity:1;fill:#cccccc;fill-opacity:1;stroke:#aaaaaa;stroke-width:4;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M 10,10 H 46"
        id="path131209"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#cccccc;fill-opacity:1;stroke:#aaaaaa;stroke-width:4;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M 10,46 H 46"
+       id="path131209-9"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#cccccc;fill-opacity:1;stroke:#aaaaaa;stroke-width:4;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M 10,22 H 46"
+       id="path131209-9-1"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#cccccc;fill-opacity:1;stroke:#aaaaaa;stroke-width:4;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M 10,34 H 46"
+       id="path131209-9-1-2"
        sodipodi:nodetypes="cc" />
   </g>
 </svg>

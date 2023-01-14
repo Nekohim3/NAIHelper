@@ -10,12 +10,12 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
-using NAIHelper.Services;
+using NAIHelper.Database.Services;
+using NAIHelper.Database.UI_Entities;
 using NAIHelper.Utils;
 using NAIHelper.Utils.Booru;
 using NAIHelper.Utils.Extensions;
 using NAIHelper.ViewModels;
-using NAIHelper.ViewModels.UI_Entities;
 using NAIHelper.Views;
 using Newtonsoft.Json;
 using RestSharp;
@@ -23,6 +23,7 @@ using RestSharp.Authenticators;
 using RestSharp.Serializers;
 using RestSharp.Serializers.NewtonsoftJson;
 using SkiaSharp;
+using Path = System.IO.Path;
 
 namespace NAIHelper;
 
@@ -31,14 +32,17 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        g.DanbooruClient.Authenticator = new HttpBasicAuthenticator(Settings.DanbooruUsername, Settings.DanbooruApiKey);
-        g.CdnDanbooruClient.Authenticator = new HttpBasicAuthenticator(Settings.DanbooruUsername, Settings.DanbooruApiKey);
+        g.DanbooruClient.Authenticator = new HttpBasicAuthenticator(g.Settings.DanbooruUsername, g.Settings.DanbooruApiKey);
+        g.CdnDanbooruClient.Authenticator = new HttpBasicAuthenticator(g.Settings.DanbooruUsername, g.Settings.DanbooruApiKey);
         g.GelbooruClient.Options.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 OPR/93.0.0.0";
         JsonConvert.DefaultSettings = () => new JsonSerializerSettings() { MaxDepth = 1024, TypeNameHandling = TypeNameHandling.None, ReferenceLoopHandling = ReferenceLoopHandling.Ignore, PreserveReferencesHandling = PreserveReferencesHandling.Objects };
+        //var setupService = new SetupService();
+        //setupService.SetupContext();
     }
 
     public override void OnFrameworkInitializationCompleted()
     {
+        #region Test
         //var dService  = new DirService();
         ////var tService  = new TagService();
         ////var dtService = new DirTagService();
@@ -59,7 +63,6 @@ public partial class App : Application
         //var res1      = await dService.UnlinkTag(dirs[1], tags[0]);
         //service.Update(dirs);
         //var dir1 = new Dir("d1");
-        //var q    = JsonConvert.SerializeObject(dir1);
         //var dir2 = new Dir("d2");
         //var tag1 = new Tag("t1");
         //var tag2 = new Tag("t2");
@@ -72,6 +75,8 @@ public partial class App : Application
         //tag1.Dirs.Add(dir1);
         //tag1.Dirs.Add(dir2);
         //tag2.Dirs.Add(dir2);
+
+        //var lst = dir1.FromTree(_ => _.Dirs);
         //var qq      = JsonConvert.SerializeObject(dir1, Formatting.Indented);
         //var service = new DirService();
         //var q       = await service.Create(new List<Dir>(){dir1});
@@ -85,7 +90,46 @@ public partial class App : Application
 
 
 
+        //var files      = Directory.GetFiles("C:\\NAI\\Datasets\\niliu_chahui\\training_data\\images\\10_niliu_chahui").Where(_ => System.IO.Path.GetExtension(_) == ".txt");
+        //var lst        = new List<(int count, string tags)>();
+        //var maxCounter = 0;
+        //var maxFile    = "";
+        //foreach (var x in files)
+        //{
+        //    var tags    = File.ReadAllText(x);
+        //    var c1      = tags.Count(_ => _ == ',');
+        //    var c2      = tags.Split(new[] { ",", " " }, StringSplitOptions.None).Length;
+        //    var counter = c1 + c2;
+        //    lst.Add((counter, tags));
+        //    if (counter > 180)
+        //    {
+        //        File.Delete($"C:\\NAI\\Datasets\\niliu_chahui\\training_data\\images\\10_niliu_chahui\\{Path.GetFileNameWithoutExtension(x)}.txt");
+        //        try
+        //        {
+        //            File.Delete($"C:\\NAI\\Datasets\\niliu_chahui\\training_data\\images\\10_niliu_chahui\\{Path.GetFileNameWithoutExtension(x)}.jpg");
+        //        }
+        //        catch (Exception e)
+        //        {
 
+        //        }
+        //        try
+        //        {
+        //            File.Delete($"C:\\NAI\\Datasets\\niliu_chahui\\training_data\\images\\10_niliu_chahui\\{Path.GetFileNameWithoutExtension(x)}.png");
+        //        }
+        //        catch (Exception e)
+        //        {
+
+        //        }
+        //    }
+        //    if (counter > maxCounter)
+        //    {
+        //        maxCounter = counter;
+        //        maxFile    = x;
+        //    }
+        //}
+
+        //lst = lst.OrderByDescending(_ => _.count).ToList();
+        //var llst = lst.Select(_ => _.tags).ToList();
         //var stream = g.BooruClient.DownloadStream(req);
         //var buf = new byte[stream.Length];
         //stream.Read(buf);
@@ -99,16 +143,18 @@ public partial class App : Application
 
 
         //var q = ImageCompare("C:\\NAI\\Datasets\\niliu_chahui\\training_data\\images\\n_niliu_chahui\\5973742.jpg",
-                              //"C:\\NAI\\Datasets\\niliu_chahui\\training_data\\images\\n_niliu_chahui\\5973748.jpg");
+        //"C:\\NAI\\Datasets\\niliu_chahui\\training_data\\images\\n_niliu_chahui\\5973748.jpg");
         //await new DanbooruDownloader().DownloadConcept("niliu_chahui");
 
         //await new BooruDownloader().DownloadConcept("niliu_chahui", Booru.Gelbooru);
         //new BooruDownloader().DownloadFromSite();
+
+        #endregion
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow {DataContext = new MainWindowViewModel()};
+            desktop.MainWindow = new MainWindow { DataContext = new MainWindowViewModel() };
         }
-
         base.OnFrameworkInitializationCompleted();
     }
 

@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="NAIHelper.Pages.Lora.Views.LoraView">
+    <Grid>
+		<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" >
+			<TextBlock Text="TODO:"/>
+            <TextBlock Text="Загрузка сетов (картинка + список тегов) с Danbooru и Gelbooru"/>
+			<TextBlock Text="Ограничение по количеству тегов при загрузке" Margin="25,0,0,0"/>
+			<TextBlock Text="Слияние дублей сетов по картинкам из разных источников" Margin="25,0,0,0"/>
+			<TextBlock Text="Тренировка"/>
+            <TextBlock Text="Выключение StabbleDiffusion при тренировке" Margin="25,0,0,0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using NAIHelper.Database.UI_Entities.BaseEntities;
 using NAIHelper.ViewModels;
-using NAIHelper.ViewModels.UI_Entities.BaseEntities;
 
 namespace NAIHelper.Utils.Extensions
 {

@@ -6,9 +6,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
 using JetBrains.Annotations;
+using NAIHelper.Database.UI_Entities.BaseEntities;
 using NAIHelper.ViewModels;
-using NAIHelper.ViewModels.UI_Entities;
-using NAIHelper.ViewModels.UI_Entities.BaseEntities;
 using Newtonsoft.Json;
 
 namespace NAIHelper.Utils;

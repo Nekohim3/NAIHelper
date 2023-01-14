@@ -5,11 +5,9 @@ using NAIHelper.Utils;
 using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.Linq;
-using NAIHelper.ViewModels.UI_Entities;
 using System;
 using System.IO;
 using System.Threading;
-using NAIHelper.Services;
 using Newtonsoft.Json;
 
 namespace NAIHelper.Views

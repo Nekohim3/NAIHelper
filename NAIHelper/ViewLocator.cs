@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using NAIHelper.ViewModels;
 using System;
+using NAIHelper.ViewModels;
 
 namespace NAIHelper
 {

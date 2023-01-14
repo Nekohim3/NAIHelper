@@ -1,6 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:NAIHelper"
+             xmlns:controls="clr-namespace:NAIHelper.Utils.Controls"
              x:Class="NAIHelper.App">
     <Application.DataTemplates>
         <local:ViewLocator/>
@@ -131,6 +132,12 @@
 		<Style Selector="ScrollBar /template/ Thumb:pressed">
             <Setter Property="Background" Value="#888888"/>
             <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+		<Style Selector="controls|GroupBox.Config">
+			<Setter Property="Margin" Value="3"/>
+        </Style>
+        <Style Selector="controls|GroupBox.Config > StackPanel">
+			<Setter Property="Margin" Value="3"/>
         </Style>
     </Application.Styles>
 </Application>

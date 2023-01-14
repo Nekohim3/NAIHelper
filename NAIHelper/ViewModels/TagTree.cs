@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using DynamicData;
-using NAIHelper.Services;
+using NAIHelper.Database.Services;
+using NAIHelper.Database.UI_Entities;
 using NAIHelper.Utils;
-using NAIHelper.ViewModels.UI_Entities;
 using ReactiveUI;
 
 namespace NAIHelper.ViewModels;
