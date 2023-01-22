@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using NAIHelper.Utils.Extensions;
@@ -45,7 +46,7 @@ namespace NAIHelper.Utils.Booru
 
         private async Task<List<Dir>> DownloadDirs()
         {
-            var wiki = await DownloadWikiBody("wiki_pages/tag_groups.html");
+            var wiki = await DownloadWikiBody("wiki_pages/tag_groups");
             var uls  = wiki.ChildNodes.Where(_ => _.Name.ToLower() == "ul");
             var tree = new List<Dir>();
             foreach (var x in uls)
@@ -65,15 +66,28 @@ namespace NAIHelper.Utils.Booru
 
         private async Task<HtmlNode> DownloadWikiBody(string path)
         {
-            var resp = await g.DanbooruClient.ExecuteAsync(new RestRequest(path));
-            if (!resp.IsSuccessStatusCode || string.IsNullOrEmpty(resp.Content))
-                throw new Exception($"DownloadWikiBody:{path} download error");
-            var doc = new HtmlDocument();
-            doc.LoadHtml(resp.Content);
-            var wiki = doc.GetElementbyId("wiki-page-body");
-            if(wiki == null)
-                throw new Exception($"DownloadWikiBody:{path} get wiki-page-body error");
-            return wiki;
+            var errCount = 0;
+            while (true)
+            {
+                var resp = await g.DanbooruClient.ExecuteAsync(new RestRequest($"{path}.html"));
+                if (!resp.IsSuccessStatusCode || string.IsNullOrEmpty(resp.Content))
+                {
+                    //throw new Exception($"DownloadWikiBody:{path} download error");
+                    errCount++;
+                    if(errCount == 5) 
+                        throw new Exception($"DownloadWikiBody:{path} download error");
+                    Thread.Sleep(1111);
+                    continue;
+                }
+
+                var doc = new HtmlDocument();
+                doc.LoadHtml(resp.Content);
+                var wiki = doc.GetElementbyId("wiki-page-body");
+                if (wiki == null)
+                    throw new Exception($"DownloadWikiBody:{path} get wiki-page-body error");
+                return wiki;
+
+            }
         }
 
         private async Task LoadDirChilds(Dir dir, HtmlNode node)
@@ -100,20 +114,19 @@ namespace NAIHelper.Utils.Booru
                             var tagName = aNode.InnerText.ToLower().Trim().FirstCharToUpper();
                             if (_allTags.TryGetValue(tagName, out var tag))
                             {
-                                tag.Dirs.Add(newDir);
+                                newDir.AddTag(tag);
                             }
                             else
                             {
                                 var newTag = new Tag(tagName, aNode.GetAttributeValue("href", null));
-                                newTag.Dirs.Add(newDir);
-                                newDir.Tags.Add(newTag);
+                                newDir.AddTag(newTag);
                                 _allTags.Add(newTag.Name, newTag);
                             }
                         }
 
                         newDir.Name = dirName.FirstCharToUpper();
                         newDir.Link = aNode.GetAttributeValue("href", null);
-                        dir.Dirs.Add(newDir);
+                        dir.AddChildDir(newDir);
                     }
                 }
                 else if (child.Name.ToLower() == "ul")
@@ -156,7 +169,7 @@ namespace NAIHelper.Utils.Booru
                         if (level > currentParent.level)
                         {
                             var newDir = new Dir(node.InnerText.Trim().FirstCharToUpper());
-                            currentParent.dir.Dirs.Add(newDir);
+                            currentParent.dir.AddChildDir(newDir);
                             parentList.Add((newDir, level));
                             currentParent = parentList.Last();
                         }
@@ -165,7 +178,7 @@ namespace NAIHelper.Utils.Booru
                             parentList.Remove(currentParent);
                             currentParent = parentList.Last();
                             var newDir = new Dir(node.InnerText.Trim().FirstCharToUpper());
-                            currentParent.dir.Dirs.Add(newDir);
+                            currentParent.dir.AddChildDir(newDir);
                             parentList.Add((newDir, level));
                             currentParent = parentList.Last();
                         }
@@ -178,7 +191,7 @@ namespace NAIHelper.Utils.Booru
                             }
 
                             var newDir = new Dir(node.InnerText.Trim().FirstCharToUpper());
-                            currentParent.dir.Dirs.Add(newDir);
+                            currentParent.dir.AddChildDir(newDir);
                             parentList.Add((newDir, level));
                             currentParent = parentList.Last();
                         }
@@ -193,13 +206,12 @@ namespace NAIHelper.Utils.Booru
                                     var tagName = c.InnerText.Trim().FirstCharToUpper();
                                     if (_allTags.TryGetValue(tagName, out var tag))
                                     {
-                                        tag.Dirs.Add(currentParent.dir);
+                                        currentParent.dir.AddTag(tag);
                                     }
                                     else
                                     {
                                         var newTag = new Tag(tagName, c.GetAttributeValue("href", null));
-                                        newTag.Dirs.Add(currentParent.dir);
-                                        currentParent.dir.Tags.Add(newTag);
+                                        currentParent.dir.AddTag(newTag);
                                         _allTags.Add(newTag.Name, newTag);
                                     }
                                 }

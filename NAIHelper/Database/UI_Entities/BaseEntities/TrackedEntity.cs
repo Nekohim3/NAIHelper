@@ -20,29 +20,32 @@ public abstract class TrackedEntity : ViewModelBase
                                    return;
                                if (string.IsNullOrEmpty(args.PropertyName) || sender == null)
                                    return;
-                               var newValue = sender.GetType().GetProperty(args.PropertyName).GetValue(sender);
-                               if (_baseValues[args.PropertyName] == newValue)
+                               if (sender.GetProperties().Count(_ => Attribute.IsDefined(_, typeof(TrackInclude)) && _.Name == args.PropertyName) != 0)
                                {
-                                   IsChanged = false;
-                                   foreach (var x in sender.GetProperties().Where(_ => Attribute.IsDefined(_, typeof(TrackInclude))))
+                                   var newValue = sender.GetType().GetProperty(args.PropertyName).GetValue(sender);
+                                   if (_baseValues[args.PropertyName] == newValue)
                                    {
-                                       if (x.Name == args.PropertyName)
-                                           continue;
-                                       if (_baseValues[x.Name] == null)
+                                       IsChanged = false;
+                                       foreach (var x in sender.GetProperties().Where(_ => Attribute.IsDefined(_, typeof(TrackInclude))))
                                        {
-                                           if (x.GetValue(sender) != null)
-                                               IsChanged = true;
-                                       }
-                                       else
-                                       {
-                                           if (_baseValues[x.Name].Equals(x.GetValue(sender)))
-                                               IsChanged = true;
+                                           if (x.Name == args.PropertyName)
+                                               continue;
+                                           if (_baseValues[x.Name] == null)
+                                           {
+                                               if (x.GetValue(sender) != null)
+                                                   IsChanged = true;
+                                           }
+                                           else
+                                           {
+                                               if (_baseValues[x.Name].Equals(x.GetValue(sender)))
+                                                   IsChanged = true;
+                                           }
                                        }
                                    }
-                               }
-                               else
-                               {
-                                   IsChanged = true;
+                                   else
+                                   {
+                                       IsChanged = true;
+                                   }
                                }
                            };
     }

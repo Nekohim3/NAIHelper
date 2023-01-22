@@ -11,6 +11,8 @@ public class Group : IdEntity
     #region Entity properties
 
     private string _name = string.Empty;
+    [TrackInclude]
+    [JsonProperty]
     public string Name
     {
         get => _name;
@@ -18,6 +20,8 @@ public class Group : IdEntity
     }
 
     private int _order;
+    [TrackInclude]
+    [JsonProperty]
     public int Order
     {
         get => _order;
@@ -25,6 +29,8 @@ public class Group : IdEntity
     }
 
     private string? _note;
+    [TrackInclude]
+    [JsonProperty]
     public string? Note
     {
         get => _note;
@@ -32,6 +38,8 @@ public class Group : IdEntity
     }
 
     private int _idSession;
+    [TrackInclude]
+    [JsonProperty]
     public int IdSession
     {
         get => _idSession;
@@ -39,7 +47,6 @@ public class Group : IdEntity
     }
 
     private Session _session;
-    [JsonIgnore]
     public Session Session
     {
         get => _session;
@@ -47,6 +54,7 @@ public class Group : IdEntity
     }
 
     private ObservableCollectionWithSelectedItem<GroupTag> _groupTags;
+    [JsonProperty]
     public ObservableCollectionWithSelectedItem<GroupTag> GroupTags
     {
         get => _groupTags;

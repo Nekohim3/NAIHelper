@@ -57,6 +57,7 @@ public class Dir : IdEntity, ISelected, IExpanded
     }
 
     private ObservableCollectionWithSelectedItem<Dir> _dirs = new();
+    [JsonProperty]
     public ObservableCollectionWithSelectedItem<Dir> Dirs
     {
         get => _dirs;
@@ -64,6 +65,7 @@ public class Dir : IdEntity, ISelected, IExpanded
     }
 
     private ObservableCollectionWithSelectedItem<Tag> _tags = new();
+    [JsonProperty]
     public ObservableCollectionWithSelectedItem<Tag> Tags
     {
         get => _tags;

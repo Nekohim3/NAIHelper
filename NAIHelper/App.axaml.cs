@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Shapes;
@@ -43,6 +44,7 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         #region Test
+
         //var dService  = new DirService();
         ////var tService  = new TagService();
         ////var dtService = new DirTagService();
@@ -76,10 +78,10 @@ public partial class App : Application
         //tag1.Dirs.Add(dir2);
         //tag2.Dirs.Add(dir2);
 
-        //var lst = dir1.FromTree(_ => _.Dirs);
+        ////var lst = dir1.FromTree(_ => _.Dirs);
         //var qq      = JsonConvert.SerializeObject(dir1, Formatting.Indented);
         //var service = new DirService();
-        //var q       = await service.Create(new List<Dir>(){dir1});
+        //var q       = await service.Create(dir1);
 
         //var service = new DirTagService();
         //var list    = await service.Get();
@@ -148,7 +150,11 @@ public partial class App : Application
 
         //await new BooruDownloader().DownloadConcept("niliu_chahui", Booru.Gelbooru);
         //new BooruDownloader().DownloadFromSite();
-
+        //var bl      = new BooruTagsLoader();
+        //var tree    = await bl.DownloadTree();
+        //var qq      = JsonConvert.SerializeObject(tree, Formatting.Indented);
+        //var service = new DirService();
+        //var q       = await service.Create(tree);
         #endregion
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

@@ -1,4 +1,5 @@
 ﻿using NAIHelper.Database.UI_Entities.BaseEntities;
+using NAIHelper.Utils;
 using Newtonsoft.Json;
 using ReactiveUI;
 
@@ -9,6 +10,8 @@ public class GroupTag : IdEntity
     #region Entity properties
 
     private int _order;
+    [TrackInclude]
+    [JsonProperty]
     public int Order
     {
         get => _order;
@@ -16,6 +19,8 @@ public class GroupTag : IdEntity
     }
 
     private int _strength;
+    [TrackInclude]
+    [JsonProperty]
     public int Strength
     {
         get => _strength;
@@ -23,6 +28,8 @@ public class GroupTag : IdEntity
     }
 
     private int _idGroup;
+    [TrackInclude]
+    [JsonProperty]
     public int IdGroup
     {
         get => _idGroup;
@@ -30,7 +37,6 @@ public class GroupTag : IdEntity
     }
 
     private Group _group;
-    [JsonIgnore]
     public Group Group
     {
         get => _group;
@@ -38,6 +44,8 @@ public class GroupTag : IdEntity
     }
 
     private int _idTag;
+    [TrackInclude]
+    [JsonProperty]
     public int IdTag
     {
         get => _idTag;
@@ -45,7 +53,6 @@ public class GroupTag : IdEntity
     }
 
     private Tag _tag;
-    [JsonIgnore]
     public Tag Tag
     {
         get => _tag;

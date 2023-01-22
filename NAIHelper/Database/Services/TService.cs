@@ -43,8 +43,15 @@ public abstract class TService<T> where T : IdEntity
 
     public virtual async Task<List<T>?> Create(List<T> tList)
     {
-        var eList = await g.ApiClient.PostAsync<List<T>>(tList.GetTRequest($"{ApiPath}/Bulk"));
-        return eList;
+        try
+        {
+            var eList = await g.ApiClient.PostAsync<List<T>>(tList.GetTRequest($"{ApiPath}/Bulk"));
+            return eList;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     public virtual async Task<T?> Update(T t)

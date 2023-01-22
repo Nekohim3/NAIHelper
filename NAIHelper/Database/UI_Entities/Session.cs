@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NAIHelper.Database.UI_Entities.BaseEntities;
 using NAIHelper.Utils;
+using Newtonsoft.Json;
 using ReactiveUI;
 
 namespace NAIHelper.Database.UI_Entities;
@@ -10,12 +11,16 @@ public class Session : IdEntity
     #region Entity properties
 
     private string _name;
+    [TrackInclude]
+    [JsonProperty]
     public string Name
     {
         get => _name;
         set => this.RaiseAndSetIfChanged(ref _name, value);
     }
     private string? _note;
+    [TrackInclude]
+    [JsonProperty]
     public string? Note
     {
         get => _note;
@@ -23,6 +28,8 @@ public class Session : IdEntity
     }
 
     private ObservableCollectionWithSelectedItem<Group> _groups;
+    [TrackInclude]
+    [JsonProperty]
     public ObservableCollectionWithSelectedItem<Group> Groups
     {
         get => _groups;

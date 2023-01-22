@@ -6,11 +6,16 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using NAIHelper.Database.Services;
 using NAIHelper.Pages.Lora.ViewModels;
 using NAIHelper.Pages.Lora.Views;
+using NAIHelper.Pages.PromptEditor.ViewModels;
+using NAIHelper.Pages.PromptEditor.Views;
 using NAIHelper.Utils;
+using NAIHelper.Utils.Booru;
+using NAIHelper.Utils.Extensions;
 using NAIHelper.Utils.Page;
 using NAIHelper.Views;
 using ReactiveUI;
@@ -65,6 +70,12 @@ namespace NAIHelper.ViewModels
         public ReactiveCommand<Unit, Unit> SaveConfigCmd { get; }
         public ReactiveCommand<Unit, Unit> CancelConfigCmd { get; }
         public ReactiveCommand<Unit, Unit> RestoreConfigCmd { get; }
+        public ReactiveCommand<Unit, Unit> TestCmd { get; }
+
+        public ReactiveCommand<Unit, Unit> ResetDatabaseCmd { get; }
+
+
+        
         
         public MainWindowViewModel()
         {
@@ -72,6 +83,8 @@ namespace NAIHelper.ViewModels
             RestoreConfigCmd = ReactiveCommand.Create(OnRestoreConfig);
             CancelConfigCmd  = ReactiveCommand.Create(OnCancelConfig);
             SaveConfigCmd    = ReactiveCommand.Create(OnSaveConfig);
+            TestCmd          = ReactiveCommand.Create(OnTest);
+            ResetDatabaseCmd = ReactiveCommand.Create(OnResetDatabase);
             Settings         = g.Settings;
             g.PageManager    = new PageManager(this);
             PageManager      = g.PageManager;
@@ -89,10 +102,12 @@ namespace NAIHelper.ViewModels
             {
                 g.WebApiConfigured    = true;
                 InitTabs();
+                await Task.Run(() => g.TagTree.Load());
             }
             else
             {
                 DeInitTabs();
+                await g.TagTree.ClearData();
                 WrongSettingsDetected = true;
             }
             LoadingAPI = false;
@@ -100,10 +115,8 @@ namespace NAIHelper.ViewModels
 
         public void InitTabs()
         {
-            Dispatcher.UIThread.Post(() =>
-                                     {
-                                     });
-            PageManager.PageList.Add(new TPage(new TestView(),          null,                         "Prompt editor"));
+            DeInitTabs();
+            PageManager.PageList.Add(new TPage(new PromptEditorView(),          new PromptEditorViewModel(),                         "Prompt editor"));
             PageManager.PageList.Add(new TPage(new TagTreeEditorView(), new TagTreeEditorViewModel(), "Tag editor"));
             PageManager.PageList.Add(new TPage(new LoraView(),          new LoraViewModel(),          "LORA"));
             PageManager.Switch(g.PageManager.PageList.First());
@@ -136,6 +149,21 @@ namespace NAIHelper.ViewModels
         private void OnRestoreConfig()
         {
             Settings.RestoreDefaults();
+        }
+
+        private async void OnResetDatabase()
+        {
+            var service = new SetupService();
+            await service.EnsureDeleted();
+        }
+
+        private async void OnTest()
+        {
+            //var btl     = new BooruTagsLoader();
+            //var tree    = await btl.DownloadTree();
+            //var service = new DirService();
+            //var res     = await service.Create(tree);
+            var q = g.TagTree.RootDirs[1].FromTree(_ => _.Dirs).ToList();
         }
     }
 }

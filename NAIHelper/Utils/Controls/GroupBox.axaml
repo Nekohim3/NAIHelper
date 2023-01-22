@@ -10,8 +10,10 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="Auto, *">
-                    <TextBlock Margin="5,0,5,0" Grid.Row="0" FontWeight="Bold" Text="{TemplateBinding Header}"/>
-					<Border Grid.Row="1" BorderThickness="1" Background="#00000000" BorderBrush="#cc3333">
+					<Grid Grid.Row="0" Background="#01000000" Classes="DragControl:GroupBoxHeader">
+                        <TextBlock Margin="5,0,5,0" FontWeight="Bold" Text="{TemplateBinding Header}"/>
+                    </Grid>
+                    <Border Grid.Row="1" BorderThickness="1" Background="#00000000" BorderBrush="#cc3333">
                         <ContentPresenter Content="{TemplateBinding Content}"/>
                     </Border>
                 </Grid>

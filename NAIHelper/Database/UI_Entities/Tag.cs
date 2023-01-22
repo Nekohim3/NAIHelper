@@ -75,7 +75,7 @@ public class Tag : IdEntity, ISelected, IDraggable
 
     #region Properties
 
-    public string Paths => string.Join('\n', Dirs.Select(_ => _.Path));
+    public string Paths => $"{Name}\n{string.Join('\n', Dirs.Select(_ => _.Path))}";
 
     #endregion
 

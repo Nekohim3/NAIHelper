@@ -59,7 +59,8 @@ namespace NAIHelper.Utils.Page
 
         private void OnSwitch()
         {
-            g.PageManager.Switch(this);
+            if(!IsSelected)
+                g.PageManager.Switch(this);
         }
     }
 }

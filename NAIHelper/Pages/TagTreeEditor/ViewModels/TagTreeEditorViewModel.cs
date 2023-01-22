@@ -6,77 +6,71 @@ using System.Threading.Tasks;
 using DynamicData;
 using NAIHelper.Database.UI_Entities;
 using NAIHelper.Utils;
+using NAIHelper.Utils.Controls;
 using ReactiveUI;
 
 namespace NAIHelper.ViewModels
 {
     public class TagTreeEditorViewModel : ViewModelBase
     {
-        private TagTree _tagTree;
-        public TagTree TagTree
-        {
-            get => _tagTree;
-            set => this.RaiseAndSetIfChanged(ref _tagTree, value);
-        }
+        //private TagTree _tagTree;
+        //public TagTree TagTree
+        //{
+        //    get => _tagTree;
+        //    set => this.RaiseAndSetIfChanged(ref _tagTree, value);
+        //}
 
-        private bool _showInnerTags;
-        public bool ShowInnerTags
+        //private bool _showInnerTags;
+        //public bool ShowInnerTags
+        //{
+        //    get => _showInnerTags;
+        //    set
+        //    {
+        //        this.RaiseAndSetIfChanged(ref _showInnerTags, value); 
+        //        LoadTags();
+        //    }
+        //}
+        private TagTreeViewModel _tagTreeViewModel;
+        public TagTreeViewModel TagTreeViewModel
         {
-            get => _showInnerTags;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _showInnerTags, value); 
-                LoadTags();
-            }
+            get => _tagTreeViewModel;
+            set => this.RaiseAndSetIfChanged(ref _tagTreeViewModel, value);
         }
-
-        private bool _editorMode;
-        public bool EditorMode
-        {
-            get => _editorMode;
-            set => this.RaiseAndSetIfChanged(ref _editorMode, value);
-        }
-        private bool _selectionMode;
-        public bool SelectionMode
-        {
-            get => _selectionMode;
-            set => this.RaiseAndSetIfChanged(ref _selectionMode, value);
-        }
-
         public TagTreeEditorViewModel()
         {
-            TagTree = g.TagTree;
-            TagTree.RootDirs.SelectionChanged += RootDirsOnSelectionChanged;
+            TagTreeViewModel = new TagTreeViewModel(true, true, true);
+            //TagTree = g.TagTree;
+            //TagTree.RootDirs.SelectionChanged += RootDirsOnSelectionChanged;
         }
 
-        private void RootDirsOnSelectionChanged(ObservableCollectionWithSelectedItem<Dir> sender, Dir newselection, Dir oldselection)
-        {
-            if(TagTree.RootDirs.SelectedItem != null)
-                LoadTags();
-        }
+        //private void RootDirsOnSelectionChanged(ObservableCollectionWithSelectedItem<Dir> sender, Dir newselection, Dir oldselection)
+        //{
+        //    if(TagTree.RootDirs.SelectedItem != null)
+        //        LoadTags();
+        //}
 
-        public void TagsOnSelectionChanged(Tag newselection, Tag oldselection)
-        {
-            //OnCancelTag();
-        }
+        //public void TagsOnSelectionChanged(Tag newselection, Tag oldselection)
+        //{
+        //    //OnCancelTag();
+        //}
 
-        public void LoadTags()
-        {
-            if (g.TagTree.RootDirs.SelectedItem == null) return;
-            g.TagTree.Tags.Clear();
-            var tags = new List<Tag>();
-            if (ShowInnerTags)
-                LoadTags(tags, g.TagTree.RootDirs.SelectedItem);
-            else
-                tags.AddRange(g.TagTree.RootDirs.SelectedItem.Tags);
-            g.TagTree.Tags.AddRange(tags.OrderBy(_ => _.Name).Distinct());
-        }
+        //public void LoadTags()
+        //{
+        //    if (g.TagTree.RootDirs.SelectedItem == null) return;
+        //    g.TagTree.Tags.Clear();
+        //    var tags = new List<Tag>();
+        //    if (ShowInnerTags)
+        //        LoadTags(tags, g.TagTree.RootDirs.SelectedItem);
+        //    else
+        //        tags.AddRange(g.TagTree.RootDirs.SelectedItem.Tags);
+        //    g.TagTree.Tags.AddRange(tags.OrderBy(_ => _.Name).Distinct());
+        //}
 
-        private void LoadTags(List<Tag> tags, Dir dir)
-        {
-            tags.AddRange(dir.Tags);
-            foreach (var x in dir.Dirs) LoadTags(tags, x);
-        }
+        //private void LoadTags(List<Tag> tags, Dir dir)
+        //{
+        //    tags.AddRange(dir.Tags);
+        //    foreach (var x in dir.Dirs) LoadTags(tags, x);
+        //}
 
 
     }

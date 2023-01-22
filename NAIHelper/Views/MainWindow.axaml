@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:page="clr-namespace:NAIHelper.Utils.Page"
         xmlns:controls="clr-namespace:NAIHelper.Utils.Controls"
-        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720" MinHeight="720" MinWidth="1280"
+        mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080" MinHeight="720" MinWidth="1280"
         KeyDown="InputElement_OnKeyDown"
         x:Class="NAIHelper.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico" Background="#222222"
@@ -179,10 +179,12 @@
                             </controls:GroupBox>
                         </StackPanel>
                     </Grid>
-                    <Grid Grid.Row="1" ColumnDefinitions="Auto,*, Auto, Auto">
-                        <Button Classes="Simple" Grid.Column="0" Content="Restore defaults" Command="{Binding RestoreConfigCmd}"/>
-						<Button Classes="Simple" Grid.Column="2" Content="Save config" Command="{Binding SaveConfigCmd}"/>
-						<Button Classes="Simple" Grid.Column="3" Content="Cancel" Command="{Binding CancelConfigCmd}"/>
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto, Auto,Auto,*, Auto, Auto">
+						<Button Classes="Simple" Grid.Column="0" Content="Restore defaults" Command="{Binding RestoreConfigCmd}"/>
+						<Button Classes="Simple" Grid.Column="1" Content="Test" Command="{Binding TestCmd}"/>
+                        <Button Classes="Simple" Grid.Column="2" Content="Reset database" Command="{Binding ResetDatabaseCmd}"/>
+						<Button Classes="Simple" Grid.Column="4" Content="Save config" Command="{Binding SaveConfigCmd}"/>
+						<Button Classes="Simple" Grid.Column="5" Content="Cancel" Command="{Binding CancelConfigCmd}"/>
                     </Grid>
                 </Grid>
             </Grid>

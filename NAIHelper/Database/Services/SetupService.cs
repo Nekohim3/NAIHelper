@@ -42,5 +42,10 @@ namespace NAIHelper.Database.Services
                 }
             }
         }
+
+        public virtual async Task EnsureDeleted()
+        {
+            await g.ApiClient.ExecuteAsync(new RestRequest($"{ApiPath}/EnsureDeleted"));
+        }
     }
 }
