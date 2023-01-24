@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using NAIHelper.Utils;
 using NAIHelper.ViewModels;
 using Newtonsoft.Json;
@@ -9,8 +12,8 @@ namespace NAIHelper.Database.UI_Entities.BaseEntities;
 
 public abstract class TrackedEntity : ViewModelBase
 {
-    private Dictionary<string, object?> _baseValues = new();
-    [JsonIgnore] public bool? IsChanged { get; set; }
+    private             Dictionary<string, object?> _baseValues = new();
+    [JsonIgnore] public bool?                       IsChanged { get; set; }
 
     protected TrackedEntity()
     {
@@ -50,6 +53,10 @@ public abstract class TrackedEntity : ViewModelBase
                            };
     }
 
+    public bool IsPropertyChanged(string propertyName) => _baseValues.ContainsKey(propertyName)
+                                                              ? _baseValues[propertyName] != GetType().GetProperty(propertyName).GetValue(this)
+                                                              : throw new Exception("Property is not tracked.");
+
     public void StartTracking()
     {
         IsChanged = false;
@@ -62,12 +69,9 @@ public abstract class TrackedEntity : ViewModelBase
             throw new InvalidOperationException("Entity is not tracked.");
         _baseValues.Clear();
         foreach (var x in this.GetProperties().Where(_ => Attribute.IsDefined(_, typeof(TrackInclude))))
-        {
             _baseValues[x.Name] = x.GetValue(this);
-        }
 
         IsChanged = false;
-        return;
     }
 
     public void RevertChanges()
@@ -78,4 +82,36 @@ public abstract class TrackedEntity : ViewModelBase
             x.SetValue(this, _baseValues[x.Name]);
         IsChanged = false;
     }
+}
+
+public static class TrackerExtension
+{
+    public static List<T> StartTracking<T>(this List<T> tList) where T : TrackedEntity
+    {
+        foreach (var x in tList)
+            x.StartTracking();
+
+        return tList;
+    }
+
+    public static List<T> AcceptChanges<T>(this List<T> tList) where T : TrackedEntity
+    {
+        foreach (var x in tList)
+            x.AcceptChanges();
+
+        return tList;
+    }
+
+    public static List<T> RevertChanges<T>(this List<T> tList) where T : TrackedEntity
+    {
+        foreach (var x in tList)
+            x.RevertChanges();
+
+        return tList;
+    }
+
+
+
+    public static bool IsPropertyChanged<TEntity, TProperty>(this TEntity model, Expression<Func<TEntity, TProperty>> propertySelector) where TEntity : TrackedEntity =>
+        model.IsPropertyChanged((propertySelector.Body as MemberExpression).Member.Name);
 }
